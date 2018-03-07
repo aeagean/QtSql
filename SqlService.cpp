@@ -1,6 +1,8 @@
 #include "SqlService.h"
 #include <QSqlError>
 #include <QDebug>
+#include <QSqlRecord>
+#include <QSqlField>
 
 SqlService::SqlService()
 {
@@ -33,24 +35,17 @@ bool SqlService::open(QString name)
 
 bool SqlService::createTable(QString table, QMap<QString, QString> map)
 {
-    QString tableList = QString("create table %1 (").arg(table);
-    QMapIterator<QString, QString> i(map);
-    while (i.hasNext()) {
-        i.next();
-        tableList.append(QString("%1 %2").arg(i.key()).arg(i.value()));
-        if (i.hasNext())
-            tableList.append(", ");
-    }
-    tableList.append(")");
-
     if(!isTableExist(table)) {
-        if (!m_sqlQuery.exec(QString(tableList))) {
-            m_lastError = m_sqlQuery.lastError().text();
-            return false;
+        QString tableList = QString("create table %1 (").arg(table);
+        QMapIterator<QString, QString> i(map);
+        while (i.hasNext()) {
+            i.next();
+            tableList.append(QString("%1 %2").arg(i.key()).arg(i.value()));
+            if (i.hasNext())
+                tableList.append(", ");
         }
-        else {
-            return true;
-        }
+        tableList.append(")");
+        return this->exec(tableList);
 
     }
     else {
@@ -59,10 +54,10 @@ bool SqlService::createTable(QString table, QMap<QString, QString> map)
     }
 }
 
-bool SqlService::insertTable(QString table, QMap<QString, QVariant> map)
+bool SqlService::insertRowTable(QString table, QMap<QString, QVariant> map)
 {
-
     QMap<QString, QString> tableContentMap;
+
     if (!isTableExist(table)) {
         m_lastError = QString("Not find %1 table!").arg(table);
         return false;
@@ -91,8 +86,7 @@ bool SqlService::insertTable(QString table, QMap<QString, QVariant> map)
 
     insertTableContent.append(values);
 
-    if (!m_sqlQuery.prepare(insertTableContent)) {
-        m_lastError = m_sqlQuery.lastError().text();
+    if (!this->prepare(insertTableContent)) {
         return false;
     }
 
@@ -102,11 +96,41 @@ bool SqlService::insertTable(QString table, QMap<QString, QVariant> map)
         m_sqlQuery.addBindValue(map[ii.key()]);
     }
 
-    if (!m_sqlQuery.exec()) {
-        m_lastError = m_sqlQuery.lastError().text();
-        return false;
+    return this->exec();
+}
+
+bool SqlService::deleteRowTable(QString table, QString columnName, QString value)
+{
+    QString deleteContent = QString("delete from %1 where %2 = %3").arg(table).arg(columnName).arg(value);
+    return this->exec(deleteContent);
+}
+
+bool SqlService::sortTable(QString table, QString target)
+{
+    /* select * from table order by target */
+    QString sortContent = QString("select * from %1 order by %2").arg(table).arg(target);
+    return this->exec(sortContent);
+}
+
+QList<QMap<QString, QVariant>> SqlService::getValues(int page, int pageNum)
+{
+    QList<QMap<QString, QVariant>> list;
+    if (!m_sqlQuery.seek(page)) {
+        m_lastError = "getValues error![The number of pages is beyond the limit]";
+        return list;
     }
-    return true;
+
+    do {
+        QMap<QString, QVariant> map;
+        for (int i = 0; i < m_sqlQuery.record().count(); i++)
+            map.insert(m_sqlQuery.record().field(i).name(),
+                       m_sqlQuery.record().field(i).value());
+        list.append(map);
+
+    }
+    while(m_sqlQuery.next() && --pageNum);
+
+    return list;
 }
 
 QString SqlService::lastError()
@@ -127,6 +151,39 @@ QSqlDatabase &SqlService::getSqlDatabase()
 bool SqlService::isTableExist(QString table)
 {
     return m_sqlDatabase.tables().contains(table);
+}
+
+bool SqlService::prepare(const QString &query)
+{
+    if (!m_sqlQuery.prepare(query)) {
+        m_lastError = m_sqlQuery.lastError().text();
+        return false;
+    }
+    else {
+        return true;
+    }
+}
+
+bool SqlService::exec(const QString &query)
+{
+    if (!m_sqlQuery.exec(QString(query))) {
+        m_lastError = m_sqlQuery.lastError().text();
+        return false;
+    }
+    else {
+        return true;
+    }
+}
+
+bool SqlService::exec()
+{
+    if (!m_sqlQuery.exec()) {
+        m_lastError = m_sqlQuery.lastError().text();
+        return false;
+    }
+    else {
+        return true;
+    }
 }
 
 QMap<QString, QString> SqlService::getTableInfo(QString table)
