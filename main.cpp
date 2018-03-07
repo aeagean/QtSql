@@ -12,9 +12,13 @@ int main(int argc, char *argv[])
     map["type"] = "varchar";
     sql.createTable("bb", map);
     QMap<QString, QVariant> mapContent;
-    mapContent["id"] = 2;
+    mapContent["id"] = 51;
     mapContent["type"] = "high";
-    sql.insertTable("bb", mapContent);
+//    sql.insertRowTable("bb", mapContent);
+//    sql.deleteRowTable("bb", "id", "4");
+    sql.sortTable("bb", "id");
+
+    QList<QMap<QString, QVariant>> valuesList = sql.getValues(0, 5);
 
     qDebug()<<sql.lastError();
     return a.exec();
