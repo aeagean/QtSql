@@ -99,10 +99,31 @@ bool SqlService::insertRowTable(QString table, QMap<QString, QVariant> map)
     return this->exec();
 }
 
+/* ALTER TABLE table_name ADD column_name datatype */
+bool SqlService::insertColumnTable(QString table, QString name, QString type)
+{
+    QString content = QString("alter table %1 add %2 %3").arg(table).arg(name).arg(type);
+    return this->exec(content);
+}
+
 bool SqlService::deleteRowTable(QString table, QString columnName, QString value)
 {
     QString deleteContent = QString("delete from %1 where %2 = %3").arg(table).arg(columnName).arg(value);
     return this->exec(deleteContent);
+}
+
+bool SqlService::deleteColumnTable(QString table, QString columnName)
+{
+    /* ALTER TABLE table_name DROP COLUMN column_name
+     * QSQLITE不支持
+     */
+    if (m_sqlDatabase.driverName() != "QSQLITE") {
+        QString content = QString("alter table %1 drop column %2").arg(table).arg(columnName);
+        return this->exec(content);
+    }
+    else {
+        return false;
+    }
 }
 
 bool SqlService::sortTable(QString table, QString target)

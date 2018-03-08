@@ -14,11 +14,21 @@ public:
     /* 创建一个table, 传入一个key, value，对应顺序的变量名字（key），类型（value） */
     bool createTable(QString table, QMap<QString, QString> map);
     bool insertRowTable(QString table, QMap<QString, QVariant> map);
+    /* ALTER TABLE table_name ADD column_name datatype
+     * 插入一列，arg(表格名字)，arg(变量)，arg(变量类型)
+     */
+    bool insertColumnTable(QString table, QString name, QString type);
 
-    /* 删除一行，arg1(表名称)，arg2(列名称)，arg3(值)
+    /* 删除一行，arg1(表名称)，arg2(列名称(比如id))，arg3(值)(列(id)所对应的值)
      * DELETE FROM 表名称 WHERE 列名称 = 值
      */
     bool deleteRowTable(QString table, QString columnName, QString value);
+
+
+    /* ALTER TABLE table_name DROP COLUMN column_name
+     * 某些数据库系统不允许这种在数据库表中删除列的方式 (DROP COLUMN column_name)。
+     */
+    bool deleteColumnTable(QString table, QString columnName);
 
     /* select * from table order by target;
      * 升序排列
