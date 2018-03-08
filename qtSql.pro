@@ -25,3 +25,5 @@ SOURCES += main.cpp \
 
 HEADERS += \
     SqlService.h
+DISTFILES += \
+    qtSql.pri
