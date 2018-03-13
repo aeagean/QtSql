@@ -106,6 +106,23 @@ bool SqlService::insertColumnTable(QString table, QString name, QString type)
     return this->exec(content);
 }
 
+/* UPDATE 表名称 SET 列名称 = 新值 WHERE 列名称 = 某值 */
+bool SqlService::updateRowTable(QString table, QString name, QVariantMap map)
+{
+    QString content = QString("update %1 set ").arg(table);
+
+    QMapIterator<QString, QVariant> i(map);
+    while (i.hasNext()) {
+        i.next();
+
+        content += QString("%1 = %2, ").arg(i.key()).arg(i.value().toString());
+    }
+
+    content += QString("%1 = %2").arg(name).arg(map[name].toString());
+
+    return this->exec(content);
+}
+
 bool SqlService::deleteRowTable(QString table, QString columnName, QString value)
 {
     QString deleteContent = QString("delete from %1 where %2 = %3").arg(table).arg(columnName).arg(value);
