@@ -20,6 +20,12 @@ int main(int argc, char *argv[])
     sql.deleteColumnTable("bb", "list");
     sql.sortTable("bb", "id");
 
+
+    QMap<QString, QVariant> testContent;
+    testContent["id"] = 61;
+    testContent["type"] = "low";
+
+    sql.updateRowTable("bb", "id", "51", testContent);
 //    QList<QMap<QString, QVariant>> valuesList = sql.getValues(0, 5);
 //    qDebug()<<valuesList;
     qDebug()<<sql.lastError();

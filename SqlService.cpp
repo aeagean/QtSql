@@ -115,10 +115,38 @@ bool SqlService::updateRowTable(QString table, QString name, QVariantMap map)
     while (i.hasNext()) {
         i.next();
 
-        content += QString("%1 = %2, ").arg(i.key()).arg(i.value().toString());
+        if (i.hasNext())
+            content += QString("%1 = '%2', ").arg(i.key()).arg(i.value().toString());
+        else
+            content += QString("%1 = '%2' ").arg(i.key()).arg(i.value().toString());
+
+
     }
 
-    content += QString("%1 = %2").arg(name).arg(map[name].toString());
+    content += QString("where %1 = %2").arg(name).arg(map[name].toString());
+
+    return this->exec(content);
+}
+
+bool SqlService::updateRowTable(QString table, QString targetKey, QString targetValue, QVariantMap map)
+{
+    QString content = QString("update %1 set ").arg(table);
+
+    QMapIterator<QString, QVariant> i(map);
+    while (i.hasNext()) {
+        i.next();
+
+        if (i.hasNext())
+            content += QString("%1 = '%2', ").arg(i.key()).arg(i.value().toString());
+        else
+            content += QString("%1 = '%2' ").arg(i.key()).arg(i.value().toString());
+
+
+    }
+
+    content += QString("where %1 = %2").arg(targetKey).arg(targetValue);
+
+    qDebug()<<content;
 
     return this->exec(content);
 }
