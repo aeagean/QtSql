@@ -19,6 +19,11 @@ public:
      */
     bool insertColumnTable(QString table, QString name, QString type);
 
+    /* 更新表格(table)的一行(name字段)的数据(QVariantMap);
+     * UPDATE 表名称 SET 列名称 = 新值 WHERE 列名称 = 某值
+     */
+    bool updateRowTable(QString table, QString name, QVariantMap map);
+
     /* 删除一行，arg1(表名称)，arg2(列名称(比如id))，arg3(值)(列(id)所对应的值)
      * DELETE FROM 表名称 WHERE 列名称 = 值
      */
