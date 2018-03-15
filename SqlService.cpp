@@ -54,7 +54,7 @@ bool SqlService::createTable(QString table, QMap<QString, QString> map)
     }
 }
 
-bool SqlService::insertRowTable(QString table, QMap<QString, QVariant> map)
+bool SqlService::insertRowTable(QString table, QVariantMap map)
 {
     QMap<QString, QString> tableContentMap;
 
@@ -178,16 +178,16 @@ bool SqlService::sortTable(QString table, QString target)
     return this->exec(sortContent);
 }
 
-QList<QMap<QString, QVariant>> SqlService::getValues(int page, int pageNum)
+QList<QVariantMap> SqlService::getValues(int page, int pageNum)
 {
-    QList<QMap<QString, QVariant>> list;
+    QList<QVariantMap> list;
     if (!m_sqlQuery.seek(page)) {
         m_lastError = "getValues error![The number of pages is beyond the limit]";
         return list;
     }
 
     do {
-        QMap<QString, QVariant> map;
+        QVariantMap map;
         for (int i = 0; i < m_sqlQuery.record().count(); i++)
             map.insert(m_sqlQuery.record().field(i).name(),
                        m_sqlQuery.record().field(i).value());
