@@ -55,6 +55,9 @@ public:
      */
     QList<QMap<QString, QVariant>> getValues(int page, int pageNum);
 
+    /* 获取个数 */
+    int size();
+
     QString lastError();
 
     QSqlQuery& getSqlQuery();

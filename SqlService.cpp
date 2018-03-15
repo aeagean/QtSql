@@ -199,6 +199,11 @@ QList<QMap<QString, QVariant>> SqlService::getValues(int page, int pageNum)
     return list;
 }
 
+int SqlService::size()
+{
+    return m_sqlQuery.size();
+}
+
 QString SqlService::lastError()
 {
     return m_lastError;
