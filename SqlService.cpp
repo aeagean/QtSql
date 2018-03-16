@@ -147,8 +147,6 @@ bool SqlService::updateRowTable(QString table, QString targetKey, QString target
 
     content += QString("where %1 = %2").arg(targetKey).arg(targetValue);
 
-    qDebug()<<content;
-
     return this->exec(content);
 }
 
