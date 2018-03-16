@@ -201,7 +201,7 @@ QList<QVariantMap> SqlService::getValues(int page, int pageNum)
 
 int SqlService::size()
 {
-    return m_sqlQuery.numRowsAffected();
+    return m_sqlQuery.size();
 }
 
 QString SqlService::lastError()
