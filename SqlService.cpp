@@ -3,6 +3,7 @@
 #include <QDebug>
 #include <QSqlRecord>
 #include <QSqlField>
+#include <QSqlDriver>
 
 SqlService::SqlService()
 {
@@ -24,8 +25,8 @@ bool SqlService::open(QString name)
 
     /* 打开数据库 */
     if(!m_sqlDatabase.open()) {
-         m_lastError = m_sqlDatabase.lastError().text();
-         return false;
+        m_lastError = m_sqlDatabase.lastError().text();
+        return false;
     }
 
     /* 以下执行相关QSL语句 */
@@ -201,7 +202,21 @@ QList<QVariantMap> SqlService::getValues(int page, int pageNum)
 
 int SqlService::size()
 {
-    return m_sqlQuery.size();
+    int size = -1;
+    while (m_sqlQuery.next()) {
+        /* 驱动支持返回记录数 */
+        if (m_sqlQuery.driver()->hasFeature(QSqlDriver::QuerySize)) {
+            size = m_sqlQuery.size();
+            break;
+        }
+        else { /* 驱动不支持返回记录数，只能循环查找 */
+            m_sqlQuery.last();
+            size = m_sqlQuery.at() + 1;
+        }
+    }
+
+    m_sqlQuery.first();
+    return size;
 }
 
 QString SqlService::lastError()
