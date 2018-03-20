@@ -9,7 +9,7 @@ SqlService::SqlService()
 
 }
 
-bool SqlService::open(QString name)
+bool SqlService::open(QString name, const QString &type)
 {
     if (QSqlDatabase::contains(name))
     {
@@ -17,7 +17,7 @@ bool SqlService::open(QString name)
     }
     else {
         /* 添加数据库驱动 */
-        m_sqlDatabase = QSqlDatabase::addDatabase("QSQLITE", name);
+        m_sqlDatabase = QSqlDatabase::addDatabase(type, name);
         /* 数据库连接命名 */
         m_sqlDatabase.setDatabaseName(name);
     }

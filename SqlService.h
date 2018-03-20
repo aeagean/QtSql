@@ -10,7 +10,8 @@ public:
     SqlService();
 
     /* 打开sql文件，没有sql文件则创建一个对应数据库文件 */
-    bool open(QString name);
+    bool open(QString name, const QString &type = "QSQLITE");
+
     /* 创建一个table, 传入一个key, value，对应顺序的变量名字（key），类型（value） */
     bool createTable(QString table, QMap<QString, QString> map);
     bool insertRowTable(QString table, QVariantMap map);
