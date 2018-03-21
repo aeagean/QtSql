@@ -72,6 +72,8 @@ public:
 private:
     QMap<QString, QString> getTableInfo(QString table);
 
+    void setLastError(QString lastError);
+
 private:
     QSqlQuery m_sqlQuery;
     QSqlDatabase m_sqlDatabase;
