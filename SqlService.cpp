@@ -10,6 +10,11 @@ SqlService::SqlService()
 
 }
 
+SqlService::~SqlService()
+{
+    m_sqlDatabase.close();
+}
+
 bool SqlService::open(const QString &name, const QString &type)
 {
     if (QSqlDatabase::contains(name))
@@ -143,8 +148,6 @@ bool SqlService::updateRowTable(const QString &table, const QString &targetKey, 
             content += QString("%1 = '%2', ").arg(i.key()).arg(i.value().toString());
         else
             content += QString("%1 = '%2' ").arg(i.key()).arg(i.value().toString());
-
-
     }
 
     content += QString("where %1 = %2").arg(targetKey).arg(targetValue);
@@ -222,6 +225,11 @@ int SqlService::size()
 QString SqlService::lastError()
 {
     return m_lastError;
+}
+
+void SqlService::close()
+{
+    m_sqlDatabase.close();
 }
 
 QSqlQuery &SqlService::getSqlQuery()

@@ -16,6 +16,7 @@ public:
     };
 
     SqlService();
+    virtual ~SqlService();
 
     /* 打开sql文件，没有sql文件则创建一个对应数据库文件 */
     bool open(const QString &name, const QString &type = "QSQLITE");
@@ -60,8 +61,8 @@ public:
     /* 获取数据库的查询结果，
      * 一般是调用exec命令后再调用该函数，
      * 不然就导致返回结果是上一次就结果,
-     * arg1(从那一页获取),
-     * arg2(一页获取多少条数据),
+     * arg1(从那一页获取), 最小值为,
+     * arg2(一页获取多少条数据)， 最小值为1,
      *
      */
     QList<QVariantMap> getValues(int page, int pageNum);
@@ -71,6 +72,9 @@ public:
 
     QString lastError();
 
+    void close();
+
+protected:
     QSqlQuery& getSqlQuery();
     QSqlDatabase& getSqlDatabase();
     bool isTableExist(const QString &table);
