@@ -163,8 +163,10 @@ bool SqlService::sortTable(const QString &table, const QString &columnKey)
     return this->exec(sortContent);
 }
 
-QList<QVariantMap> SqlService::getValues(int page, int pageNum)
+QList<QVariantMap> SqlService::getValues(const QString &table, int page, int pageNum)
 {
+    m_sqlQuery.exec(QString("select * from %1").arg(table));
+
     QList<QVariantMap> list;
     if (!m_sqlQuery.seek(page)) {
         setLastError("[The number of pages is beyond the limit]", Error);

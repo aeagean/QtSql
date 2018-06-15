@@ -60,7 +60,7 @@ public:
      * arg2(一页获取多少条数据)， 最小值为1,
      *
      */
-    QList<QVariantMap> getValues(int page, int pageNum);
+    QList<QVariantMap> getValues(const QString &table, int page, int pageNum);
 
     /* 获取个数 */
     int size();
