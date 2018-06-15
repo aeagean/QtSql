@@ -64,7 +64,7 @@ bool SqlService::createTable(const QString &table, const QMap<QString, QString> 
     }
 }
 
-bool SqlService::insertRowTable(const QString &table, const QVariantMap &map)
+bool SqlService::insertRow(const QString &table, const QVariantMap &map)
 {
     QMap<QString, QString> tableContentMap;
 
@@ -110,14 +110,14 @@ bool SqlService::insertRowTable(const QString &table, const QVariantMap &map)
 }
 
 /* ALTER TABLE table_name ADD column_name datatype */
-bool SqlService::insertColumnTable(const QString &table, const QString &clumnKey, const QString &type)
+bool SqlService::insertColumn(const QString &table, const QString &clumnKey, const QString &type)
 {
     QString content = QString("alter table %1 add %2 %3").arg(table).arg(clumnKey).arg(type);
     return this->exec(content);
 }
 
 /* UPDATE 表名称 SET 列名称 = 新值 WHERE 列名称 = 某值 */
-bool SqlService::updateRowTable(const QString &table, const QString &clumnKey, const QString &rowValue, const QVariantMap &map)
+bool SqlService::updateRow(const QString &table, const QString &clumnKey, const QString &rowValue, const QVariantMap &map)
 {
     QString content = QString("update %1 set ").arg(table);
 
@@ -136,13 +136,13 @@ bool SqlService::updateRowTable(const QString &table, const QString &clumnKey, c
     return this->exec(content);
 }
 
-bool SqlService::deleteRowTable(const QString &table, const QString &columnKey, const QString &rowValue)
+bool SqlService::deleteRow(const QString &table, const QString &columnKey, const QString &rowValue)
 {
     QString deleteContent = QString("delete from %1 where %2 = %3").arg(table).arg(columnKey).arg(rowValue);
     return this->exec(deleteContent);
 }
 
-bool SqlService::deleteColumnTable(const QString &table, const QString &columnKey)
+bool SqlService::deleteColumn(const QString &table, const QString &columnKey)
 {
     /* ALTER TABLE table_name DROP COLUMN column_name
      * QSQLITE不支持
@@ -156,7 +156,7 @@ bool SqlService::deleteColumnTable(const QString &table, const QString &columnKe
     }
 }
 
-bool SqlService::sortTable(const QString &table, const QString &columnKey)
+bool SqlService::sort(const QString &table, const QString &columnKey)
 {
     /* select * from table order by target */
     QString sortContent = QString("select * from %1 order by %2").arg(table).arg(columnKey);

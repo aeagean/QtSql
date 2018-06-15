@@ -24,34 +24,34 @@ public:
     /* 创建一个table, 传入一个key, value，对应顺序的变量名字（key），类型（value） */
     bool createTable(const QString &table, const QMap<QString, QString> &map);
 
-    bool insertRowTable(const QString &table, const QVariantMap &map);
+    bool insertRow(const QString &table, const QVariantMap &map);
 
     /* ALTER TABLE table_name ADD column_name datatype
      * 插入一列，arg(表格名字)，arg(变量)，arg(变量类型)
      */
-    bool insertColumnTable(const QString &table, const QString &clumnKey, const QString &type);
+    bool insertColumn(const QString &table, const QString &clumnKey, const QString &type);
 
     /* 更新表格(table)的一行(name字段)的数据(QVariantMap);
      * key,value是针对需要全部修改的，对应的列key,对应的行value
      * UPDATE 表名称 SET 列名称 = 新值 WHERE 列名称 = 某值 & update 表名 set 字段=新值,… where 条件
      */
-    bool updateRowTable(const QString &table, const QString &clumnKey, const QString &rowValue, const QVariantMap &map);
+    bool updateRow(const QString &table, const QString &clumnKey, const QString &rowValue, const QVariantMap &map);
 
     /* 删除一行，arg1(表名称)，arg2(列名称(比如id))，arg3(值)(列(id)所对应的值)
      * DELETE FROM 表名称 WHERE 列名称 = 值
      */
-    bool deleteRowTable(const QString &table, const QString &columnKey, const QString &rowValue);
+    bool deleteRow(const QString &table, const QString &columnKey, const QString &rowValue);
 
 
     /* ALTER TABLE table_name DROP COLUMN column_name
      * 某些数据库系统不允许这种在数据库表中删除列的方式 (DROP COLUMN column_name)。
      */
-    bool deleteColumnTable(const QString &table, const QString &columnKey);
+    bool deleteColumn(const QString &table, const QString &columnKey);
 
     /* select * from table order by target;
      * 升序排列
      */
-    bool sortTable(const QString &table, const QString &columnKey);
+    bool sort(const QString &table, const QString &columnKey);
 
     /* 获取数据库的查询结果，
      * 一般是调用exec命令后再调用该函数，

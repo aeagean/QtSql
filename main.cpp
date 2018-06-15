@@ -22,29 +22,29 @@ int main(int argc, char *argv[])
     QMap<QString, QVariant> mapContent;
     mapContent["id"] = 51;
     mapContent["type"] = "high";
-    sql.insertRowTable("bb", mapContent);
+    sql.insertRow("bb", mapContent);
     /* 向aa.db数据库的表格bb插入一行 */
 
     /* 向aa.db数据库的表格bb删除以id为51值得一行 */
-    sql.deleteRowTable("bb", "id", "51");
+    sql.deleteRow("bb", "id", "51");
     /* 向aa.db数据库的表格bb删除以id为51值得一行 */
 
     /* 插入一列，列名为list,列名的类型是varchar相当于c++的char* */
-    sql.insertColumnTable("bb", "list", "varchar");
+    sql.insertColumn("bb", "list", "varchar");
     /* 插入一列，列名为list,列名的类型是varchar相当于c++的char* */
 
     /* 删除一列，列名为list*/
-    sql.deleteColumnTable("bb", "list");
+    sql.deleteColumn("bb", "list");
     /* 删除一列，列名为list*/
 
     /* 排序表格bb,以id排序 */
-    sql.sortTable("bb", "id");
+    sql.sort("bb", "id");
     /* 排序表格bb,以id排序 */
 
     /* 向aa.db数据库的表格bb插入一行 */
     mapContent["id"] = 61;
     mapContent["type"] = "high";
-    sql.insertRowTable("bb", mapContent);
+    sql.insertRow("bb", mapContent);
     /* 向aa.db数据库的表格bb插入一行 */
 
     /* 更新表格bb中的行值 */
@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
     testContent["id"] = 61;
     testContent["type"] = "low";
 
-    sql.updateRowTable("bb", "id", "51", testContent);
+    sql.updateRow("bb", "id", "51", testContent);
     /* 更新表格bb中的行值 */
 
     /* 输出最后的错误，任何地方都可以调用 */
