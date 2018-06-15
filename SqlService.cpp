@@ -38,7 +38,7 @@ bool SqlService::open(const QString &name, const QString &type)
     return true;
 }
 
-bool SqlService::createTable(const QString &table, QMap<QString, QString> map)
+bool SqlService::createTable(const QString &table, const QMap<QString, QString> &map)
 {
     if(!isTableExist(table)) {
         QString tableList = QString("create table %1 (").arg(table);
@@ -59,7 +59,7 @@ bool SqlService::createTable(const QString &table, QMap<QString, QString> map)
     }
 }
 
-bool SqlService::insertRowTable(const QString &table, QVariantMap map)
+bool SqlService::insertRowTable(const QString &table, const QVariantMap &map)
 {
     QMap<QString, QString> tableContentMap;
 
@@ -112,7 +112,7 @@ bool SqlService::insertColumnTable(const QString &table, const QString &name, co
 }
 
 /* UPDATE 表名称 SET 列名称 = 新值 WHERE 列名称 = 某值 */
-bool SqlService::updateRowTable(const QString &table, const QString &name, QVariantMap map)
+bool SqlService::updateRowTable(const QString &table, const QString &name, const QVariantMap &map)
 {
     QString content = QString("update %1 set ").arg(table);
 
@@ -131,7 +131,7 @@ bool SqlService::updateRowTable(const QString &table, const QString &name, QVari
     return this->exec(content);
 }
 
-bool SqlService::updateRowTable(const QString &table, const QString &targetKey, const QString &targetValue, QVariantMap map)
+bool SqlService::updateRowTable(const QString &table, const QString &targetKey, const QString &targetValue, const QVariantMap &map)
 {
     QString content = QString("update %1 set ").arg(table);
 
