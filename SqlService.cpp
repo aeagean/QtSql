@@ -110,9 +110,9 @@ bool SqlService::insertRowTable(const QString &table, const QVariantMap &map)
 }
 
 /* ALTER TABLE table_name ADD column_name datatype */
-bool SqlService::insertColumnTable(const QString &table, const QString &name, const QString &type)
+bool SqlService::insertColumnTable(const QString &table, const QString &clumnKey, const QString &type)
 {
-    QString content = QString("alter table %1 add %2 %3").arg(table).arg(name).arg(type);
+    QString content = QString("alter table %1 add %2 %3").arg(table).arg(clumnKey).arg(type);
     return this->exec(content);
 }
 
@@ -136,19 +136,19 @@ bool SqlService::updateRowTable(const QString &table, const QString &clumnKey, c
     return this->exec(content);
 }
 
-bool SqlService::deleteRowTable(const QString &table, const QString &columnName, const QString &value)
+bool SqlService::deleteRowTable(const QString &table, const QString &columnKey, const QString &rowValue)
 {
-    QString deleteContent = QString("delete from %1 where %2 = %3").arg(table).arg(columnName).arg(value);
+    QString deleteContent = QString("delete from %1 where %2 = %3").arg(table).arg(columnKey).arg(rowValue);
     return this->exec(deleteContent);
 }
 
-bool SqlService::deleteColumnTable(const QString &table, const QString &columnName)
+bool SqlService::deleteColumnTable(const QString &table, const QString &columnKey)
 {
     /* ALTER TABLE table_name DROP COLUMN column_name
      * QSQLITE不支持
      */
     if (m_sqlDatabase.driverName() != "QSQLITE") {
-        QString content = QString("alter table %1 drop column %2").arg(table).arg(columnName);
+        QString content = QString("alter table %1 drop column %2").arg(table).arg(columnKey);
         return this->exec(content);
     }
     else {
@@ -156,10 +156,10 @@ bool SqlService::deleteColumnTable(const QString &table, const QString &columnNa
     }
 }
 
-bool SqlService::sortTable(const QString &table, const QString &target)
+bool SqlService::sortTable(const QString &table, const QString &columnKey)
 {
     /* select * from table order by target */
-    QString sortContent = QString("select * from %1 order by %2").arg(table).arg(target);
+    QString sortContent = QString("select * from %1 order by %2").arg(table).arg(columnKey);
     return this->exec(sortContent);
 }
 
