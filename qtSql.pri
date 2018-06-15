@@ -1,6 +1,8 @@
 INCLUDEPATH += $$PWD
 
-QT += sql
+SOURCES += \
+    SqlService.cpp
 
-LIBS += -L$$PWD/lib -lQtSql
+HEADERS += \
+    SqlService.h
 

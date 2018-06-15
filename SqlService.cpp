@@ -15,6 +15,7 @@ bool SqlService::open(QString name, const QString &type)
     if (QSqlDatabase::contains(name))
     {
         m_sqlDatabase = QSqlDatabase::database(name);
+        this->setLastError(QString("Existing %1 database.").arg(name), Warning);
     }
     else {
         /* 添加数据库驱动 */
@@ -25,8 +26,11 @@ bool SqlService::open(QString name, const QString &type)
 
     /* 打开数据库 */
     if(!m_sqlDatabase.open()) {
-        setLastError(m_sqlDatabase.lastError().text());
+        setLastError(m_sqlDatabase.lastError().text(), Error);
         return false;
+    }
+    else {
+        this->setLastError(QString("The database was opened successfully."), Info);
     }
 
     /* 以下执行相关QSL语句 */
@@ -50,7 +54,7 @@ bool SqlService::createTable(QString table, QMap<QString, QString> map)
 
     }
     else {
-        setLastError(QString("Exist table<%1>!").arg(table));
+        setLastError(QString("Exist table<%1>!").arg(table), Warning);
         return false;
     }
 }
@@ -60,7 +64,7 @@ bool SqlService::insertRowTable(QString table, QVariantMap map)
     QMap<QString, QString> tableContentMap;
 
     if (!isTableExist(table)) {
-        setLastError(QString("Not find %1 table!").arg(table));
+        setLastError(QString("Not find %1 table!").arg(table), Error);
         return false;
     }
     else {
@@ -181,7 +185,7 @@ QList<QVariantMap> SqlService::getValues(int page, int pageNum)
 {
     QList<QVariantMap> list;
     if (!m_sqlQuery.seek(page)) {
-        setLastError("getValues error![The number of pages is beyond the limit]");
+        setLastError("[The number of pages is beyond the limit]", Error);
         return list;
     }
 
@@ -240,7 +244,7 @@ bool SqlService::isTableExist(QString table)
 bool SqlService::prepare(const QString &query)
 {
     if (!m_sqlQuery.prepare(query)) {
-        setLastError(m_sqlQuery.lastError().text());
+        setLastError(m_sqlQuery.lastError().text(), Error);
         return false;
     }
     else {
@@ -251,7 +255,7 @@ bool SqlService::prepare(const QString &query)
 bool SqlService::exec(const QString &query)
 {
     if (!m_sqlQuery.exec(QString(query))) {
-        setLastError(m_sqlQuery.lastError().text());
+        setLastError(m_sqlQuery.lastError().text(), Error);
         return false;
     }
     else {
@@ -262,7 +266,7 @@ bool SqlService::exec(const QString &query)
 bool SqlService::exec()
 {
     if (!m_sqlQuery.exec()) {
-        setLastError(m_sqlQuery.lastError().text());
+        setLastError(m_sqlQuery.lastError().text(), Error);
         return false;
     }
     else {
@@ -288,14 +292,30 @@ QMap<QString, QString> SqlService::getTableInfo(QString table)
     }
     else
     {
-        setLastError(m_sqlQuery.lastError().text());
+        setLastError(m_sqlQuery.lastError().text(), Error);
         return tableMap;
     }
 }
 
-void SqlService::setLastError(QString lastError)
+void SqlService::setLastError(QString lastError, SqlService::LoggerType type)
 {
+    if (lastError == "")
+        return;
+
     m_lastError = lastError;
-    qDebug()<<m_lastError;
+
+    if (type == Error)
+        qDebug()<<"[ Error ]"<<m_lastError;
+    else if (type == Warning)
+        qDebug()<<"[Warning]"<<m_lastError;
+    else if (type == Info)
+        qDebug()<<"[  Info ]"<<m_lastError;
+    else if (type == Warning)
+        qDebug()<<"[Warning]"<<m_lastError;
+    else if (type == Debug)
+        qDebug()<<"[ Debug ]"<<m_lastError;
+    else if (type == Trace)
+        qDebug()<<"[ Trace ]"<<m_lastError;
 }
+
 

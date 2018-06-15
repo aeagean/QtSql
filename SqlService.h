@@ -7,6 +7,14 @@
 class SqlService
 {
 public:
+    enum LoggerType {
+        Error = 0,
+        Warning,
+        Info,
+        Debug,
+        Trace
+    };
+
     SqlService();
 
     /* 打开sql文件，没有sql文件则创建一个对应数据库文件 */
@@ -14,7 +22,9 @@ public:
 
     /* 创建一个table, 传入一个key, value，对应顺序的变量名字（key），类型（value） */
     bool createTable(QString table, QMap<QString, QString> map);
+
     bool insertRowTable(QString table, QVariantMap map);
+
     /* ALTER TABLE table_name ADD column_name datatype
      * 插入一列，arg(表格名字)，arg(变量)，arg(变量类型)
      */
@@ -72,7 +82,7 @@ public:
 private:
     QMap<QString, QString> getTableInfo(QString table);
 
-    void setLastError(QString lastError);
+    void setLastError(QString lastError, LoggerType type = Warning);
 
 private:
     QSqlQuery m_sqlQuery;
