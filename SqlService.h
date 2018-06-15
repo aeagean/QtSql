@@ -56,7 +56,7 @@ public:
     /* 获取数据库的查询结果，
      * 一般是调用exec命令后再调用该函数，
      * 不然就导致返回结果是上一次就结果,
-     * arg1(从那一页获取), 最小值为,
+     * arg1(从那一页获取)相当于seek偏移数据, 最小值为,
      * arg2(一页获取多少条数据)， 最小值为1,
      *
      */
@@ -67,11 +67,11 @@ public:
     int size(const QString &table);
     void close();
 
-    QString lastError();
+    const QString &lastError();
 
 protected:
-    QSqlQuery& getSqlQuery();
-    QSqlDatabase& getSqlDatabase();
+    QSqlQuery &getSqlQuery();
+    QSqlDatabase &getSqlDatabase();
     bool isTableExist(const QString &table);
 
     bool prepare(const QString& query);

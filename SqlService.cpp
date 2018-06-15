@@ -211,7 +211,7 @@ int SqlService::size(const QString &table)
     return size;
 }
 
-QString SqlService::lastError()
+const QString &SqlService::lastError()
 {
     return m_lastError;
 }
