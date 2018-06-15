@@ -4,8 +4,7 @@ QT += sql
 CONFIG += c++11 console
 CONFIG -= app_bundle
 
-CONFIG += staticlib
-TEMPLATE = lib
+TEMPLATE = app
 
 TARGET = $$PWD/lib/QtSql
 
