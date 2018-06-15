@@ -186,8 +186,14 @@ QList<QVariantMap> SqlService::getValues(const QString &table, int page, int pag
     return list;
 }
 
-int SqlService::size()
+QList<QVariantMap> SqlService::getAllValues(const QString &table)
 {
+    return getValues(table, 0, size(table));
+}
+
+int SqlService::size(const QString &table)
+{
+    m_sqlQuery.exec(QString("select * from %1").arg(table));
     int size = -1;
     while (m_sqlQuery.next()) {
         /* 驱动支持返回记录数 */

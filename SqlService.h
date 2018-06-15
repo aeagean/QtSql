@@ -61,13 +61,13 @@ public:
      *
      */
     QList<QVariantMap> getValues(const QString &table, int page, int pageNum);
+    QList<QVariantMap> getAllValues(const QString &table);
 
     /* 获取个数 */
-    int size();
+    int size(const QString &table);
+    void close();
 
     QString lastError();
-
-    void close();
 
 protected:
     QSqlQuery& getSqlQuery();

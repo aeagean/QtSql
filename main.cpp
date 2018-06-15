@@ -58,6 +58,7 @@ int main(int argc, char *argv[])
     /* 输出最后的错误，任何地方都可以调用 */
     qDebug()<<sql.lastError();
     /* 输出最后的错误，任何地方都可以调用 */
+    qDebug()<<sql.size("bb")<<sql.getAllValues("bb");
 
     return a.exec();
 }
