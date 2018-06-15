@@ -10,7 +10,7 @@ SqlService::SqlService()
 
 }
 
-bool SqlService::open(QString name, const QString &type)
+bool SqlService::open(const QString &name, const QString &type)
 {
     if (QSqlDatabase::contains(name))
     {
@@ -38,7 +38,7 @@ bool SqlService::open(QString name, const QString &type)
     return true;
 }
 
-bool SqlService::createTable(QString table, QMap<QString, QString> map)
+bool SqlService::createTable(const QString &table, QMap<QString, QString> map)
 {
     if(!isTableExist(table)) {
         QString tableList = QString("create table %1 (").arg(table);
@@ -59,7 +59,7 @@ bool SqlService::createTable(QString table, QMap<QString, QString> map)
     }
 }
 
-bool SqlService::insertRowTable(QString table, QVariantMap map)
+bool SqlService::insertRowTable(const QString &table, QVariantMap map)
 {
     QMap<QString, QString> tableContentMap;
 
@@ -105,14 +105,14 @@ bool SqlService::insertRowTable(QString table, QVariantMap map)
 }
 
 /* ALTER TABLE table_name ADD column_name datatype */
-bool SqlService::insertColumnTable(QString table, QString name, QString type)
+bool SqlService::insertColumnTable(const QString &table, const QString &name, const QString &type)
 {
     QString content = QString("alter table %1 add %2 %3").arg(table).arg(name).arg(type);
     return this->exec(content);
 }
 
 /* UPDATE 表名称 SET 列名称 = 新值 WHERE 列名称 = 某值 */
-bool SqlService::updateRowTable(QString table, QString name, QVariantMap map)
+bool SqlService::updateRowTable(const QString &table, const QString &name, QVariantMap map)
 {
     QString content = QString("update %1 set ").arg(table);
 
@@ -124,8 +124,6 @@ bool SqlService::updateRowTable(QString table, QString name, QVariantMap map)
             content += QString("%1 = '%2', ").arg(i.key()).arg(i.value().toString());
         else
             content += QString("%1 = '%2' ").arg(i.key()).arg(i.value().toString());
-
-
     }
 
     content += QString("where %1 = %2").arg(name).arg(map[name].toString());
@@ -133,7 +131,7 @@ bool SqlService::updateRowTable(QString table, QString name, QVariantMap map)
     return this->exec(content);
 }
 
-bool SqlService::updateRowTable(QString table, QString targetKey, QString targetValue, QVariantMap map)
+bool SqlService::updateRowTable(const QString &table, const QString &targetKey, const QString &targetValue, QVariantMap map)
 {
     QString content = QString("update %1 set ").arg(table);
 
@@ -154,13 +152,13 @@ bool SqlService::updateRowTable(QString table, QString targetKey, QString target
     return this->exec(content);
 }
 
-bool SqlService::deleteRowTable(QString table, QString columnName, QString value)
+bool SqlService::deleteRowTable(const QString &table, const QString &columnName, const QString &value)
 {
     QString deleteContent = QString("delete from %1 where %2 = %3").arg(table).arg(columnName).arg(value);
     return this->exec(deleteContent);
 }
 
-bool SqlService::deleteColumnTable(QString table, QString columnName)
+bool SqlService::deleteColumnTable(const QString &table, const QString &columnName)
 {
     /* ALTER TABLE table_name DROP COLUMN column_name
      * QSQLITE不支持
@@ -174,7 +172,7 @@ bool SqlService::deleteColumnTable(QString table, QString columnName)
     }
 }
 
-bool SqlService::sortTable(QString table, QString target)
+bool SqlService::sortTable(const QString &table, const QString &target)
 {
     /* select * from table order by target */
     QString sortContent = QString("select * from %1 order by %2").arg(table).arg(target);
@@ -236,7 +234,7 @@ QSqlDatabase &SqlService::getSqlDatabase()
     return m_sqlDatabase;
 }
 
-bool SqlService::isTableExist(QString table)
+bool SqlService::isTableExist(const QString &table)
 {
     return m_sqlDatabase.tables().contains(table);
 }
@@ -274,7 +272,7 @@ bool SqlService::exec()
     }
 }
 
-QMap<QString, QString> SqlService::getTableInfo(QString table)
+QMap<QString, QString> SqlService::getTableInfo(const QString &table)
 {
     QMap<QString, QString> tableMap;
 
@@ -297,7 +295,7 @@ QMap<QString, QString> SqlService::getTableInfo(QString table)
     }
 }
 
-void SqlService::setLastError(QString lastError, SqlService::LoggerType type)
+void SqlService::setLastError(const QString &lastError, SqlService::LoggerType type)
 {
     if (lastError == "")
         return;
