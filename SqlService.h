@@ -32,15 +32,10 @@ public:
     bool insertColumnTable(const QString &table, const QString &name, const QString &type);
 
     /* 更新表格(table)的一行(name字段)的数据(QVariantMap);
-     * UPDATE 表名称 SET 列名称 = 新值 WHERE 列名称 = 某值
-     */
-    bool updateRowTable(const QString &table, const QString &name, const QVariantMap &map);
-
-    /* 更新表格(table)的一行(name字段)的数据(QVariantMap);
      * key,value是针对需要全部修改的，对应的列key,对应的行value
-     * UPDATE 表名称 SET 列名称 = 新值 WHERE 列名称 = 某值
+     * UPDATE 表名称 SET 列名称 = 新值 WHERE 列名称 = 某值 & update 表名 set 字段=新值,… where 条件
      */
-    bool updateRowTable(const QString &table, const QString &targetKey, const QString &targetValue, const QVariantMap &map);
+    bool updateRowTable(const QString &table, const QString &clumnKey, const QString &rowValue, const QVariantMap &map);
 
     /* 删除一行，arg1(表名称)，arg2(列名称(比如id))，arg3(值)(列(id)所对应的值)
      * DELETE FROM 表名称 WHERE 列名称 = 值

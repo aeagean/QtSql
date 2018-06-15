@@ -117,7 +117,7 @@ bool SqlService::insertColumnTable(const QString &table, const QString &name, co
 }
 
 /* UPDATE 表名称 SET 列名称 = 新值 WHERE 列名称 = 某值 */
-bool SqlService::updateRowTable(const QString &table, const QString &name, const QVariantMap &map)
+bool SqlService::updateRowTable(const QString &table, const QString &clumnKey, const QString &rowValue, const QVariantMap &map)
 {
     QString content = QString("update %1 set ").arg(table);
 
@@ -131,26 +131,7 @@ bool SqlService::updateRowTable(const QString &table, const QString &name, const
             content += QString("%1 = '%2' ").arg(i.key()).arg(i.value().toString());
     }
 
-    content += QString("where %1 = %2").arg(name).arg(map[name].toString());
-
-    return this->exec(content);
-}
-
-bool SqlService::updateRowTable(const QString &table, const QString &targetKey, const QString &targetValue, const QVariantMap &map)
-{
-    QString content = QString("update %1 set ").arg(table);
-
-    QMapIterator<QString, QVariant> i(map);
-    while (i.hasNext()) {
-        i.next();
-
-        if (i.hasNext())
-            content += QString("%1 = '%2', ").arg(i.key()).arg(i.value().toString());
-        else
-            content += QString("%1 = '%2' ").arg(i.key()).arg(i.value().toString());
-    }
-
-    content += QString("where %1 = %2").arg(targetKey).arg(targetValue);
+    content += QString("where %1 = %2").arg(clumnKey).arg(rowValue);
 
     return this->exec(content);
 }
