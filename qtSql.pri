@@ -1,8 +1,8 @@
-INCLUDEPATH += $$PWD
+QT += sql
 
 SOURCES += \
-    SqlService.cpp
+    $$PWD/SqlService.cpp
 
 HEADERS += \
-    SqlService.h
+    $$PWD/SqlService.h
 
