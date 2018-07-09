@@ -7,7 +7,7 @@ TARGET = $$PWD/lib/QtSql
 include(qtSql.pri)
 
 SOURCES += \
-    src\SqlService.cpp
+    src/SqlService.cpp
 
 HEADERS += \
-    include\SqlService.h
+    include/SqlService.h
