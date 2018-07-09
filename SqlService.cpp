@@ -109,6 +109,16 @@ bool SqlService::insertRow(const QString &table, const QVariantMap &map)
     return this->exec();
 }
 
+bool SqlService::insertRows(const QString &table, const QList<QVariantMap> &maps)
+{
+    foreach (QVariantMap each, maps) {
+        if (!insertRow(table, each))
+            return false;
+    }
+
+    return true;
+}
+
 /* ALTER TABLE table_name ADD column_name datatype */
 bool SqlService::insertColumn(const QString &table, const QString &clumnKey, const QString &type)
 {

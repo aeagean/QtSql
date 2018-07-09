@@ -25,6 +25,7 @@ public:
     bool createTable(const QString &table, const QMap<QString, QString> &map);
 
     bool insertRow(const QString &table, const QVariantMap &map);
+    bool insertRows(const QString &table, const QList<QVariantMap> &maps);
 
     /* ALTER TABLE table_name ADD column_name datatype
      * 插入一列，arg(表格名字)，arg(变量)，arg(变量类型)
