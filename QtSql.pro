@@ -2,7 +2,11 @@ CONFIG += c++11
 CONFIG += staticlib
 TEMPLATE = lib
 
-TARGET = $$PWD/lib/QtSql
+unix:TARGET = $$PWD/lib/QtSql
+win32: {
+DESTDIR = $$PWD/lib/
+TARGET = QtSql
+}
 
 include(QtSql.pri)
 
