@@ -4,7 +4,7 @@ TEMPLATE = lib
 
 TARGET = $$PWD/lib/QtSql
 
-include(qtSql.pri)
+include(QtSql.pri)
 
 SOURCES += \
     src/SqlService.cpp
