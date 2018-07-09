@@ -17,6 +17,8 @@ SqlService::~SqlService()
 
 bool SqlService::open(const QString &name, const QString &type)
 {
+    testSupportDBType();
+
     if (QSqlDatabase::contains(name))
     {
         m_sqlDatabase = QSqlDatabase::database(name);
@@ -109,7 +111,7 @@ bool SqlService::insertRow(const QString &table, const QVariantMap &map)
     return this->exec();
 }
 
-bool SqlService::insertRows(const QString &table, const QList<QVariantMap> &maps)
+bool SqlService::insertRow(const QString &table, const QList<QVariantMap> &maps)
 {
     foreach (QVariantMap each, maps) {
         if (!insertRow(table, each))
@@ -321,6 +323,13 @@ void SqlService::setLastError(const QString &lastError, SqlService::LoggerType t
         qDebug()<<"[ Debug ]"<<m_lastError;
     else if (type == Trace)
         qDebug()<<"[ Trace ]"<<m_lastError;
+}
+
+void SqlService::testSupportDBType()
+{
+    setLastError("Available drivers:", Info);
+    QStringList drivers = QSqlDatabase::drivers();
+    setLastError(drivers.join(" "), Info);
 }
 
 
