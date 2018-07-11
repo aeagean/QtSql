@@ -4,6 +4,7 @@
 #include <QSqlRecord>
 #include <QSqlField>
 #include <QSqlDriver>
+#include <QUuid>
 
 SqlService::SqlService()
 {
@@ -69,14 +70,31 @@ bool SqlService::createTable(const QString &table, const QMap<QString, QString> 
 bool SqlService::replaceTable(const QString &table, const QMap<QString, QString> &map, SqlService::ReplaceTableMode mode)
 {
     QMap<QString, QString> oldTitles = getTableInfo(table);
+    QStringList sameTitle;
+    QStringList notSameTitle;
+    QMapIterator<QString, QString> i(map);
+    while (i.hasNext()) {
+        i.next();
+        if (!oldTitles.contains(i.key()))
+            notSameTitle.append(i.key());
+        else
+            sameTitle.append(i.key());
+    }
+
     if (mode == Append) {
-        QMapIterator<QString, QString> i(map);
-        while (i.hasNext()) {
-            i.next();
-            if (!oldTitles.contains(i.key())) {
-                insertColumn(table, i.key(), i.value());
-            }
+        foreach (QString each, notSameTitle) {
+            insertColumn(table, each, map.value(each));
         }
+    }
+    else if (mode == OverWrite) {
+        QString newTable = QString("tmp%1").arg(QUuid::createUuid().toString().remove("{").remove("}").remove("-"));
+        QString command = QString("create table %1 as select %2 from %3")
+                        .arg(newTable)
+                        .arg(sameTitle.join(","))
+                        .arg(table);
+        this->exec(command);
+        this->exec(QString("drop table if exists %1").arg(table));
+        this->exec(QString("alter table %1 rename to %2").arg(newTable).arg(table));
     }
 
     return true;
