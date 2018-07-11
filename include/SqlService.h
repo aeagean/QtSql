@@ -15,6 +15,11 @@ public:
         Trace
     };
 
+    enum ReplaceTableMode {
+        Append = 0,
+        OverWrite
+    };
+
     SqlService();
     virtual ~SqlService();
 
@@ -22,9 +27,12 @@ public:
     bool open(const QString &name, const QString &type = "QSQLITE");
 
     /* 创建一个table, 传入一个key, value，对应顺序的变量名字（key），类型（value） */
-    bool createTable(const QString &table, const QMap<QString, QString> &map);
+    bool createTable(const QString &table, const QMap<QString, QString> &titles);
+
+    bool replaceTable(const QString &table, const QMap<QString, QString> &titles, ReplaceTableMode mode = OverWrite);
 
     bool insertRow(const QString &table, const QVariantMap &map);
+
     bool insertRow(const QString &table, const QList<QVariantMap> &maps);
 
     /* ALTER TABLE table_name ADD column_name datatype

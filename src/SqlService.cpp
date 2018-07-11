@@ -66,6 +66,22 @@ bool SqlService::createTable(const QString &table, const QMap<QString, QString> 
     }
 }
 
+bool SqlService::replaceTable(const QString &table, const QMap<QString, QString> &map, SqlService::ReplaceTableMode mode)
+{
+    QMap<QString, QString> oldTitles = getTableInfo(table);
+    if (mode == Append) {
+        QMapIterator<QString, QString> i(map);
+        while (i.hasNext()) {
+            i.next();
+            if (!oldTitles.contains(i.key())) {
+                insertColumn(table, i.key(), i.value());
+            }
+        }
+    }
+
+    return true;
+}
+
 bool SqlService::insertRow(const QString &table, const QVariantMap &map)
 {
     QMap<QString, QString> tableContentMap;
