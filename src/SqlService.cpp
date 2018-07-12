@@ -87,7 +87,7 @@ bool SqlService::replaceTable(const QString &table, const QMap<QString, QString>
         }
     }
     else if (mode == OverWrite) {
-        QString newTable = QString("tmp%1").arg(QUuid::createUuid().toString().remove("{").remove("}").remove("-"));
+        QString newTable = QString("tmp%1%2").arg(QUuid::createUuid().toString().remove("{").remove("}").remove("-")).arg(table);
         QString command = QString("create table %1 as select %2 from %3")
                         .arg(newTable)
                         .arg(sameTitle.join(","))
