@@ -95,6 +95,10 @@ bool SqlService::replaceTable(const QString &table, const QMap<QString, QString>
         this->exec(command);
         this->exec(QString("drop table if exists %1").arg(table));
         this->exec(QString("alter table %1 rename to %2").arg(newTable).arg(table));
+
+        foreach (QString each, notSameTitle) {
+            insertColumn(table, each, map.value(each));
+        }
     }
 
     return true;

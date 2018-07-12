@@ -14,7 +14,7 @@ const QMap<QString, QString> testTableTitles = {
 const QMap<QString, QString> newTestTableTitles = {
     {"title1", "real"},
     {"title2", "real"},
-//    {"title3", "int"},
+    {"title3", "int"},
 //    {"title4", "varchar"},
 //    {"title5", "varchar"},
 //    {"title6", "varchar"}
